@@ -1,5 +1,5 @@
 import queue
-# import sounddevice as sd
+import sounddevice as sd
 import vosk
 import json
 import time
