@@ -1,5 +1,3 @@
-# skills/commands.py
-
 from datetime import datetime
 from core.context_manager import AdvancedContextManager
 from intents.intent_classifier import IntentClassifier
@@ -69,9 +67,11 @@ def process_command(command: str, user_id: str = "default_user") -> str:
             if len(command.split()) >= 4
             else handle_incomplete_question(command, user_id)
         ),
+        "unknown": lambda: "I'm not sure I understood. Can you rephrase that?"
     }
 
-    response = intent_handlers.get(intent, lambda: "I'm not sure I understood. Can you rephrase that?")()
+    # Handling unknown intents dynamically, while also using the default response for unrecognized intents.
+    response = intent_handlers.get(intent, intent_handlers["unknown"])()
     context_manager.update_context(user_id, {
         "intent": intent,
         "last_updated": datetime.now()
